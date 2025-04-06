@@ -1,5 +1,8 @@
 # Infraestrutura AWS para WordPress: Escalabilidade e Alta Disponibilidade
 
+![image](https://github.com/user-attachments/assets/1c5aa93b-7461-454f-933a-a90ccda5ab49)
+
+
 ## Descrição do Projeto
 
 Este projeto tem como objetivo implementar uma infraestrutura escalável e resiliente na Amazon Web Services (AWS) para efetuar o deploy de uma aplicação WordPress. A arquitetura consiste em duas instâncias EC2 localizadas em zonas diferentes, ambas conectadas a um banco de dados RDS e suportadas por um Load Balancer Classic. Utilizando serviços como EC2, RDS, EFS, Auto Scaling e Load Balancer, a infraestrutura é projetada para suportar picos de tráfego, garantindo alta disponibilidade e desempenho para a aplicação WordPress.
@@ -55,12 +58,16 @@ Antes de iniciar a implementação, certifique-se de que você possui:
 - Selecione duas **Availability Zones (AZs)** e um **NAT Gateway**.
 - Finalize a criação clicando em **Create VPC**.
 
+   ![VPC](https://github.com/user-attachments/assets/652498ab-0d6d-4f13-a878-7152ebbd7708)
+
 ### Etapa 2. Criação dos Security Groups
   - Em **Security groups** selecione **Create security group** e crie quatro grupos.
   - **web**: acessso às instâncias.
   - **clb**: acesso para o Load Balancer.
   - **rds**: acesso ao banco de dados.
-  - **efs**: acesso ao sistema de arquivos.  
+  - **efs**: acesso ao sistema de arquivos.
+
+  ![image](https://github.com/user-attachments/assets/f0d7bdc3-3ad8-4a8a-bd62-555963a0e45b)
 
 - Após a criação, edite:
 
@@ -114,6 +121,9 @@ Antes de iniciar a implementação, certifique-se de que você possui:
    - A criação da instância pode levar alguns minutos. 
    - Copie o endpoint da instância criada e cole no `script_Wordpress` fornecido neste repositório.
 
+   ![image](https://github.com/user-attachments/assets/e94a35ce-60c5-4d72-b583-bc134161156c)
+   
+
 ### Etapa 4: Criando um Sistema de Arquivos EFS
 1. **Inicie o Processo de Criação**: 
    - Procure por "EFS" na barra de pesquisa e selecione **EFS**, depois clique no botão **Create file system**.
@@ -134,6 +144,9 @@ Antes de iniciar a implementação, certifique-se de que você possui:
 5. **Aguarde a Criação**:
    - A criação do sistema de arquivos pode levar alguns minutos. 
    - Copie o ID do sistema de arquivos e cole no `script_Wordpress` fornecido neste repositório.
+
+    ![image](https://github.com/user-attachments/assets/a1d7fee2-560f-4a35-8698-136b5aa91b6e)
+
 
 ## Parte 2: Configuração de Auto Scaling e Load Balancer na AWS
 
@@ -159,6 +172,9 @@ Antes de iniciar a implementação, certifique-se de que você possui:
    - Em **Listeners and routing**, defina HTTP na porta 80.
    - Em **Health Checks**, altere o **Ping path** para: `/wp-admin/install.php`.
 
+     ![image](https://github.com/user-attachments/assets/d20216b2-a96d-4daa-8efd-7d1cced609e6)
+     
+
 ### Etapa 3: Criação de um Auto Scaling Group
 1. **Inicie o Processo de Criação**: 
    - Navegue até a seção **EC2** em **Auto Scaling Groups** e clique em **Create Auto Scaling group**.
@@ -183,10 +199,16 @@ Antes de iniciar a implementação, certifique-se de que você possui:
 4. **Revisão e Criação**:
    - Revise suas configurações e clique em **Crear Grupo do Auto Scaling**.
 
+     ![image](https://github.com/user-attachments/assets/de04b954-c252-448d-a0f4-88a162050947)
+     
+
 ### Etapa 4: Acesso ao WordPress
    - Navegue até a seção **EC2** em **Instances**, aguarde a criação das instâncias.
    - Navegue até a seção **Load Balancer**, copie o **DNS name** e cole no navegador para acessar a aplicação WordPress.
    - Faça a configuração e o login para ter acesso ao WordPress.
+
+     ![image](https://github.com/user-attachments/assets/3b92a1a6-6364-4a8d-bde7-772d70f47d5f)
+
 
 ### Etapa 5: Criação de Alarme no CloudWatch Adicionar
 1. **Criação da Escalabilidade automática**
@@ -208,6 +230,9 @@ Antes de iniciar a implementação, certifique-se de que você possui:
   - Clique em **Next**.
   - Clique em **Criar alarme**.
 
+    ![image](https://github.com/user-attachments/assets/b0ebefa2-080b-447c-a487-c40a04f6c8ec)
+    
+
 ### Etapa 6: Criação de Alarme no CloudWatch Remover
 1. **Criação Auto Scaling Group**
   - Navegue até a seção **Auto Scaling Group**, em **Escalabilidade Automatica** clique em **Criar política de Escalabilidade**.
@@ -228,6 +253,9 @@ Antes de iniciar a implementação, certifique-se de que você possui:
   - Dê um nome para o alarme.
   - Clique em **Next**.
   - Clique em **Criar alarme**.
+
+   ![image](https://github.com/user-attachments/assets/d0cc4180-94f4-45f8-9a4f-8ae7fc9a4c77)
+
 
 ## Conclusão
 
