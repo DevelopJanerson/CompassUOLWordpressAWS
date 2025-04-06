@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# Criar arquivo de configuração
-cat <<EOL > /tmp/config.env
-EFS_ID="fs-0cef7839b1c7c745a"
-EFS_REGION="us-east-1"
-MOUNT_POINT="/mnt/efs"
-WORDPRESS_DB_HOST="bancowordpress1.czqmksg46mll.us-east-1.rds.amazonaws.com"
-WORDPRESS_DB_USER="admin"
-WORDPRESS_DB_PASSWORD="Afrodite123"
-WORDPRESS_DB_NAME="bancowordpress"
-EOL
-
-# Carregar variáveis de ambiente do arquivo de configuração
-source /tmp/config.env
-
 # Atualizar pacotes
 apt-get update -y
 apt-get upgrade -y
