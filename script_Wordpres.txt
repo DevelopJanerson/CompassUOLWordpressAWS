@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# Criar arquivo de configuração
+cat <<EOL > /tmp/config.env
+EFS_ID="fs-0cef7839b1c7c745a"
+EFS_REGION="us-east-1"
+MOUNT_POINT="/mnt/efs"
+WORDPRESS_DB_HOST="bancowordpress1.czqmksg46mll.us-east-1.rds.amazonaws.com"
+WORDPRESS_DB_USER="admin"
+WORDPRESS_DB_PASSWORD="Afrodite123"
+WORDPRESS_DB_NAME="bancowordpress"
+EOL
+
+# Carregar variáveis de ambiente do arquivo de configuração
+source /tmp/config.env
+
+# Atualizar pacotes
+apt-get update -y
+apt-get upgrade -y
+
+# Instalar pacotes necessários
+apt-get install -y docker.io docker-compose git mysql-client curl nfs-common
+
+# Instalar Rust e Cargo se não estiverem instalados
+if ! command -v rustc &> /dev/null; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    source $HOME/.cargo/env
+fi
+
+# Instalar amazon-efs-utils
+if [ ! -d "efs-utils" ]; then
+    git clone https://github.com/aws/efs-utils
+    cd efs-utils
+    sudo ./build-deb.sh
+    sudo apt-get install -y ./build/amazon-efs-utils*.deb
+    cd ..
+    rm -rf efs-utils
+fi
+
+# Iniciar e habilitar o Docker
+systemctl start docker
+systemctl enable docker
+
+# Criar diretório para o EFS
+mkdir -p "$MOUNT_POINT"
+
+# Montar o EFS
+if ! mount | grep -q "$MOUNT_POINT"; then
+    sudo mount -t nfs -o nfsvers=4.1 "$EFS_ID.efs.$EFS_REGION.amazonaws.com:/" "$MOUNT_POINT"
+fi
+
+# Criar diretório para o WordPress
+mkdir -p "$MOUNT_POINT/wordpress"
+cd "$MOUNT_POINT/wordpress"
+
+# Criar arquivo docker-compose.yml
+cat <<EOL > docker-compose.yml
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "80:80"  
+    environment:
+      WORDPRESS_DB_HOST: "$WORDPRESS_DB_HOST"  
+      WORDPRESS_DB_USER: "$WORDPRESS_DB_USER"  
+      WORDPRESS_DB_PASSWORD: "$WORDPRESS_DB_PASSWORD"  
+      WORDPRESS_DB_NAME: "$WORDPRESS_DB_NAME" 
+    volumes:
+      - $MOUNT_POINT/wordpress:/var/www/html  
+EOL
+
+# Iniciar os contêineres
+docker-compose up -d
