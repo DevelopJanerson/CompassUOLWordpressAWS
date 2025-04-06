@@ -113,6 +113,7 @@ Antes de iniciar a implementação, certifique-se de que você possui:
 5. **Configurações de Rede e Segurança**:
    - Escolha a VPC (Virtual Private Cloud) criada na Etapa 1 - (parte-1).
    - Selecione o grupo de segurança RDS criado na Etapa 2 - (parte-1).
+   - Em **Configuração adicional**, dê um nome para o banco de dados.
 
 6. **Criar a Instância**:
    - Revise suas configurações e clique em **Create database** para iniciar a criação da instância.
@@ -148,9 +149,7 @@ Antes de iniciar a implementação, certifique-se de que você possui:
     ![image](https://github.com/user-attachments/assets/a1d7fee2-560f-4a35-8698-136b5aa91b6e)
 
 
-## Parte 2: Configuração de Auto Scaling e Load Balancer na AWS
-
-### Etapa 1: Creation of a Launch Template
+### Etapa 5: Creation of a Launch Template
 1. **Inicie o Processo de Criação**: 
    - Navegue até a seção **EC2** em **Launch instances** e clique em **Create Launch instances**.
    - Dê um nome ao seu template.
@@ -161,7 +160,9 @@ Antes de iniciar a implementação, certifique-se de que você possui:
    - Em **Advanced Details**, no campo **User  Data (opcional)**, cole o arquivo: `script_Wordpress` fornecido neste repositório.
    - Clique em **Create launch template**.
 
-### Etapa 2: Criação do Classic Load Balancer
+## Parte 2: Configuração de Auto Scaling e Load Balancer na AWS
+
+### Etapa 1: Criação do Classic Load Balancer
 1. **Acesse o Auto Scaling Group**:
    - Navegue até a seção **EC2** em **Load Balancer** e clique em **Create Load Balancer**.
 - Configure as opções:
@@ -175,7 +176,7 @@ Antes de iniciar a implementação, certifique-se de que você possui:
      ![image](https://github.com/user-attachments/assets/d20216b2-a96d-4daa-8efd-7d1cced609e6)
      
 
-### Etapa 3: Criação de um Auto Scaling Group
+### Etapa 2: Criação de um Auto Scaling Group
 1. **Inicie o Processo de Criação**: 
    - Navegue até a seção **EC2** em **Auto Scaling Groups** e clique em **Create Auto Scaling group**.
    - Dê um nome ao seu Auto Scaling Group.
@@ -202,7 +203,7 @@ Antes de iniciar a implementação, certifique-se de que você possui:
      ![image](https://github.com/user-attachments/assets/de04b954-c252-448d-a0f4-88a162050947)
      
 
-### Etapa 4: Acesso ao WordPress
+### Etapa 3: Acesso ao WordPress
    - Navegue até a seção **EC2** em **Instances**, aguarde a criação das instâncias.
    - Navegue até a seção **Load Balancer**, copie o **DNS name** e cole no navegador para acessar a aplicação WordPress.
    - Faça a configuração e o login para ter acesso ao WordPress.
@@ -210,7 +211,7 @@ Antes de iniciar a implementação, certifique-se de que você possui:
      ![image](https://github.com/user-attachments/assets/3b92a1a6-6364-4a8d-bde7-772d70f47d5f)
 
 
-### Etapa 5: Criação de Alarme no CloudWatch Adicionar
+### Etapa 4: Criação de Alarme no CloudWatch Adicionar
 1. **Criação da Escalabilidade automática**
   - Navegue até a seção **Auto Scaling Group**, em **Escalabilidade Automatica** clique em **Criar política de Escalabilidade**.
   - Em tipos de política, escolha **Escalabilidade Simples**.
@@ -233,7 +234,7 @@ Antes de iniciar a implementação, certifique-se de que você possui:
     ![image](https://github.com/user-attachments/assets/b0ebefa2-080b-447c-a487-c40a04f6c8ec)
     
 
-### Etapa 6: Criação de Alarme no CloudWatch Remover
+### Etapa 5: Criação de Alarme no CloudWatch Remover
 1. **Criação Auto Scaling Group**
   - Navegue até a seção **Auto Scaling Group**, em **Escalabilidade Automatica** clique em **Criar política de Escalabilidade**.
   - Em tipos de política, escolha **Escalabilidade Simples**.
